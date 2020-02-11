@@ -43,23 +43,31 @@ function submitContactForm(){
                           <td><span class='edit'>${res.firstname}</span><input type='text' class='txtedit' data-id='${res.id}' data-field='firstname' id='firstnametxt_${res.id}' value='${res.firstname}' ></td>
                           <td><span class='edit'>${res.lastname}</span><input type='text' class='txtedit' data-id='${res.id}' data-field='lastname' id='firstnametxt_${res.id}' value='${res.lastname}' ></td>
                           <td><span class='edit'>${res.email}</span><input type='text' class='txtedit' data-id='${res.id}' data-field='email' id='firstnametxt_${res.id}' value='${res.email}' ></td>
-                          <td>${res.citation}</td>
+                          <td>0</td>
+                          <td>0</td>
                           <td><a href="professors/insert_scholar_account_modal/?firstname=${res.firstname}&lastname=${res.lastname}&id=${res.id}" data-toggle="modal" data-target="#mainModal">
                             <img src="https://img.icons8.com/ios-glyphs/30/000000/graduation-cap.png">
                             </a></td> 
+
+                          <td class="actions">
+                              <a class="btn btn-warning" href="professors/article_list/" role="button">Article list</a>
+                              <a class="btn btn-warning" href="professors/reference_list/" role="button">Reference list</a>
+                              <a class="btn btn-warning" href="professors/reference_single/" role="button">Reference single</a>
+                          </td>
+
+                          <td>
+                              <span>-/-/-</span>
+                          </td>
+
                           <td class="actions">
                           <a href="#" class="btn btn-sm btn-icon btn-pure btn-default on-editing save-row"
                             data-toggle="tooltip" data-original-title="Save" hidden><i class="icon wb-wrench" aria-hidden="true"></i></a>
                           <a href="#" class="btn btn-sm btn-icon btn-pure btn-default on-editing cancel-row"
                             data-toggle="tooltip" data-original-title="Delete" hidden><i class="icon wb-close" aria-hidden="true"></i></a>
-                          <a href="#" class="btn btn-sm btn-icon btn-pure btn-default on-default edit-row"
-                            data-toggle="tooltip" data-original-title="Edit"><i class="icon wb-edit" aria-hidden="true"></i></a>
                           <a href="#" class="btn btn-sm btn-icon btn-pure btn-default on-default remove-row"
                             data-toggle="tooltip" data-original-title="Remove"><i class="icon wb-trash" aria-hidden="true"></i></a>
                         </td>
                       `;
-
-                      //$("<tr id='prof-${res.id}' class='gradeA'></tr>").html(post).appendTo(".table");
                       $(`<tr id='prof-${res.id}' class='gradeA'></tr>`).html(post).appendTo(".table");
 
                   }

@@ -142,7 +142,6 @@ class Professors extends MY_Controller {
     }
 
     public function reference_list($profScholarId){
-        var_dump("asdasd");
         $count = 0;
         $i=0;
         $j=0;
