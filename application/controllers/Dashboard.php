@@ -12,17 +12,25 @@ class Dashboard extends MY_Controller {
         $this->getMenu();
     }
 
-    public function index()
-    {
+    
 
-        $query = $this->db->query("SELECT year FROM articles GROUP BY year");
+        public function index()
+        {
+            if(isset($_SESSION['userid'])){
 
-        $res = $query->result();
-    	//$this->load->view('sign-in6');
-        $this->viewData['yearlist'] = $res;
+                $query = $this->db->query("SELECT year FROM articles GROUP BY year");
 
-        $this->load->view('template/header', $this->viewData);
-        $this->load->view('dashboard');
-        $this->load->view('template/footer');
-    }
+                $res = $query->result();
+            	//$this->load->view('sign-in6');
+                $this->viewData['yearlist'] = $res;
+
+                $this->load->view('template/header', $this->viewData);
+                $this->load->view('dashboard');
+                $this->load->view('template/footer');
+            }else{
+                 redirect('../login', 'location');
+            }
+        }
+            
+       
 }

@@ -19,6 +19,7 @@ class Articles extends MY_Controller {
 
     public function index()
     {
+      if(isset($_SESSION['userid'])){
         $this->viewData['title'] = 'Ερευνητικό Έργο Καθηγητών';
         //$viewData['articles'] = $this->article_model->get_articles();
         $prof = $this->professors_model->getRows();
@@ -28,6 +29,9 @@ class Articles extends MY_Controller {
         $this->load->view('template/header', $this->viewData);
         $this->load->view('article/index', $this->viewData);
         $this->load->view('template/footer');
+      }else{
+           redirect('../login', 'location');
+      }  
     }
 
     public function articles_page($prof = null)

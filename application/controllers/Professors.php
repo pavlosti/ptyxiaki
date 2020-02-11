@@ -24,13 +24,17 @@ class Professors extends MY_Controller {
 
     public function index()
     {
-        $this->viewData['title'] = 'Professors';
+        if(isset($_SESSION['userid'])){
+            $this->viewData['title'] = 'Professors';
 
-        $this->viewData['professors'] = $this->professors_model->getRows();
+            $this->viewData['professors'] = $this->professors_model->getRows();
 
-        $this->load->view('template/header', $this->viewData);
-        $this->load->view('professor/index', $this->viewData);
-        $this->load->view('template/footer');
+            $this->load->view('template/header', $this->viewData);
+            $this->load->view('professor/index', $this->viewData);
+            $this->load->view('template/footer');
+        }else{
+           redirect('../login', 'location');
+      }  
     }
 
     public function insert_professor_modal()
