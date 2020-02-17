@@ -17,8 +17,6 @@ class Professors extends MY_Controller {
         $this->load->helper('form');
         $this->load->library('mylib');
         $this->load->database();
-	    //$this->load->library('form_validation');
-	    //$this->load->helper('email');
         $this->getMenu();
     }
 
@@ -114,16 +112,6 @@ class Professors extends MY_Controller {
         $prof->citation_on_web = $value1;
         if ($prof->save())
         {
-            // if($scholarid == 'scholarid')
-            // {
-            //     $this->article_list($value);
-            // }
-
-            // if($citation_on_web == 'citation')
-            // {
-            //     $this->article_list($value1);
-            // }
-
             echo json_encode($prof);
         }else
         {
@@ -191,7 +179,7 @@ class Professors extends MY_Controller {
                                 $reference->ref_id = $article->references_id;
                                 $reference->scholarid_article = $article->scholarid_article;
                                 var_dump("New reference inserted");
-                                var_dump($reference);
+                                //var_dump($reference);
                                 $reference->save();
                                 //sleep(120);
                                 $count++;
@@ -204,6 +192,7 @@ class Professors extends MY_Controller {
                     }
                     var_dump("next article");
                 }
+                //UPDATE ARTICLE CITATION
                 $prof = $this->professors_model->getRow(['scholarid' => $profScholarId]);
                 $prof->citation_on_db = $prof->citation_on_db + $count;
                 $prof->last_ref_update_at = date("Y-m-d");
@@ -340,10 +329,9 @@ class Professors extends MY_Controller {
                     $article->publisher = $single_article['Publisher'];
 
                 var_dump('kainourio arthro');
-                var_dump($article);
+                //var_dump($article);
                 //die();
                 $article->save();
-
             }else{
                 var_dump("Uparxei to arthro sthn vash.");
             }

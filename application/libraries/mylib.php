@@ -6,19 +6,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 function proxyIp()
 {
-    //var_dump("hello from proxy");
     $url = 'http://pubproxy.com/api/proxy?api=N2JVT3ZYeXByd1ZEWlVwSVN2d29kZz09&google=true';
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($curl);
-    // var_dump($response);
-    // die();
     curl_close($curl);
     $res = json_decode($response);
-    // var_dump($res);
-    // die();
     $res = $res->data[0]->ipPort;
-    //var_dump($res);
     return $res;
 }
 
@@ -36,7 +30,6 @@ class Mylib {
     public function prof_list_scraping($url)
     {
         $i=0;
-        //$html = file_get_html($url);
         start:
         $ch = curl_init();
 
@@ -326,6 +319,8 @@ class Mylib {
                     }
                     $article_list[$i] = $temp;
                     $i++;
+                    $html_base->clear();
+                    unset($html_base);
                 }
                 $b = 1;
                 $n = 1;

@@ -317,9 +317,8 @@ function graphCurrentYear(year)
     method: "GET",
     success: function(data) {
       if(data == 0){
-        alert('den uparxoun dedomena')
         var prof = [];
-      var count = [];
+        var count = [];
       }
       
       var obj = JSON.parse(data);
