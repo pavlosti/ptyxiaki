@@ -319,8 +319,8 @@ class Mylib {
                     }
                     $article_list[$i] = $temp;
                     $i++;
-                    $html_base->clear();
-                    unset($html_base);
+                    // $html_base->clear();
+                    // unset($html_base);
                 }
                 $b = 1;
                 $n = 1;
