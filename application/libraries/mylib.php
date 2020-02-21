@@ -4,16 +4,65 @@ include_once('application/libraries/simple_html_dom.php');
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+//$counter = 0;
 function proxyIp()
 {
-    $url = 'http://pubproxy.com/api/proxy?api=N2JVT3ZYeXByd1ZEWlVwSVN2d29kZz09&google=true';
+    //$url = 'http://pubproxy.com/api/proxy?api=N2JVT3ZYeXByd1ZEWlVwSVN2d29kZz09&google=true';
+    $url = 'http://pubproxy.com/api/proxy';
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($curl);
     curl_close($curl);
     $res = json_decode($response);
     $res = $res->data[0]->ipPort;
+    var_dump("IP IS = ".$res);
     return $res;
+}
+
+function proxyIpDocker(&$counter)
+{
+    var_dump("counter is = ".$counter);
+    $url = 'https://www.proxydocker.com/en/proxylist/api?email=pavlostif%40outlook.com&country=all&city=all&port=all&type=all&anonymity=all&state=all&need=Google&format=json';
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curl);
+    curl_close($curl);
+    $res = json_decode($response);
+    
+    $res = $res->Proxies[$counter]->ip.':'.$res->Proxies[$counter]->port;
+    var_dump("IP IS = ".$res);
+    $counter++;
+    return $res;
+}
+
+function check_error_msg($error_msg){
+    $state = 0;
+    if($error_msg == "Proxy CONNECT aborted"){
+        $state = 1;
+    }elseif (strpos($error_msg, 'Timed out') !== false) {
+        $state = 1;
+    }elseif (strpos($error_msg, '502') !== false) {
+        $state = 1;
+    }elseif (strpos($error_msg, '503') !== false) {
+        $state = 1;
+    }elseif (strpos($error_msg, '400') !== false) {
+        $state = 1;
+    }elseif (strpos($error_msg, '401') !== false) {
+        $state = 1;
+    }elseif (strpos($error_msg, '514') !== false) {
+        $state = 1;
+    }elseif (strpos($error_msg, '403') !== false) {
+        $state = 1;
+    }elseif (strpos($error_msg, 'failure') !== false) {
+        $state = 1;
+    }elseif (strpos($error_msg, 'SSL_ERROR_SYSCALL') !== false) {
+        $state = 1;
+    }elseif (strpos($error_msg, 'Failed') !== false) {
+        $state = 1;
+    }elseif (strpos($error_msg, 'The document has moved') !== false) {
+        $state = 1;
+    }
+    return $state;
 }
 
 
@@ -43,19 +92,9 @@ class Mylib {
         // $output contains the output string
         $str = curl_exec($ch);
         $error_msg = curl_error($ch);
-        if($error_msg == "Proxy CONNECT aborted") goto start;
-        if(strpos($error_msg, 'Timed out') !== false) goto start;
-        if(strpos($error_msg, '502') !== false) goto start;
-        if(strpos($error_msg, '503') !== false) goto start;
-        if(strpos($error_msg, '400') !== false) goto start;
-        if(strpos($error_msg, '404') !== false) goto start;
-        if(strpos($error_msg, '401') !== false) goto start;
-        if(strpos($error_msg, '514') !== false) goto start;
-        if(strpos($error_msg, '403') !== false) goto start;
-        if(strpos($error_msg, 'failure') !== false) goto start;
-        if(strpos($error_msg, 'SSL_ERROR_SYSCALL') !== false) goto start;
-        if(strpos($error_msg, 'Failed') !== false) goto start;
-        if(strpos($error_msg, 'The document has moved') !== false) goto start;
+        if(check_error_msg($error_msg) == 1){
+            goto start;
+        }
         //echo "CURL ERROR Message: ".var_dump($error_msg);
         //echo "<br>";
         //echo "Returned result: ".var_dump($str);
@@ -119,19 +158,9 @@ class Mylib {
         // $output contains the output string
         $str = curl_exec($ch);
         $error_msg = curl_error($ch);
-        if($error_msg == "Proxy CONNECT aborted") goto start;
-        if(strpos($error_msg, 'Timed out') !== false) goto start;
-        if(strpos($error_msg, '502') !== false) goto start;
-        if(strpos($error_msg, '503') !== false) goto start;
-        if(strpos($error_msg, '400') !== false) goto start;
-        if(strpos($error_msg, '401') !== false) goto start;
-        if(strpos($error_msg, '514') !== false) goto start;
-        if(strpos($error_msg, '404') !== false) goto start;
-        if(strpos($error_msg, '403') !== false) goto start;
-        if(strpos($error_msg, 'failure') !== false) goto start;
-        if(strpos($error_msg, 'SSL_ERROR_SYSCALL') !== false) goto start;
-        if(strpos($error_msg, 'Failed') !== false) goto start;
-        if(strpos($error_msg, 'The document has moved') !== false) goto start;
+        if(check_error_msg($error_msg) == 1){
+            goto start;
+        }
         // echo "CURL ERROR Message: ".var_dump($error_msg);
         // echo "<br>";
         // echo "Returned result: ".var_dump($str);
@@ -196,19 +225,9 @@ class Mylib {
         // $output contains the output string
         $str = curl_exec($ch);
         $error_msg = curl_error($ch);
-        if($error_msg == "Proxy CONNECT aborted") goto start;
-        if(strpos($error_msg, 'Timed out') !== false) goto start;
-        if(strpos($error_msg, '502') !== false) goto start;
-        if(strpos($error_msg, '503') !== false) goto start;
-        if(strpos($error_msg, '400') !== false) goto start;
-        if(strpos($error_msg, '401') !== false) goto start;
-        if(strpos($error_msg, '403') !== false) goto start;
-        if(strpos($error_msg, '404') !== false) goto start;
-        if(strpos($error_msg, '514') !== false) goto start;
-        if(strpos($error_msg, 'failure') !== false) goto start;
-        if(strpos($error_msg, 'SSL_ERROR_SYSCALL') !== false) goto start;
-        if(strpos($error_msg, 'Failed') !== false) goto start;
-        if(strpos($error_msg, 'The document has moved') !== false) goto start;
+        if(check_error_msg($error_msg) == 1){
+            goto start;
+        }
         // echo "CURL ERROR Message: ".var_dump($error_msg);
         // echo "<br>";
         // echo "Returned result: ".var_dump($str);
@@ -347,19 +366,10 @@ class Mylib {
         // $output contains the output string
         $str = curl_exec($ch);
         $error_msg = curl_error($ch);
-        if($error_msg == "Proxy CONNECT aborted") goto start;
-        if(strpos($error_msg, 'Timed out') !== false) goto start;
-        if(strpos($error_msg, '502') !== false) goto start;
-        if(strpos($error_msg, '503') !== false) goto start;
-        if(strpos($error_msg, '400') !== false) goto start;
-        if(strpos($error_msg, '401') !== false) goto start;
-        if(strpos($error_msg, '404') !== false) goto start;
-        if(strpos($error_msg, '514') !== false) goto start;
-        if(strpos($error_msg, '403') !== false) goto start;
-        if(strpos($error_msg, 'failure') !== false) goto start;
-        if(strpos($error_msg, 'SSL_ERROR_SYSCALL') !== false) goto start;
-        if(strpos($error_msg, 'Failed') !== false) goto start;
-        if(strpos($error_msg, 'The document has moved') !== false) goto start;
+        if(check_error_msg($error_msg) == 1){
+            var_dump($error_msg);
+            goto start;
+        }
         // echo "CURL ERROR Message: ".var_dump($error_msg);
         // echo "<br>";
         // echo "Returned result: ".var_dump($str);
@@ -442,6 +452,7 @@ class Mylib {
 
     public function reference_list_count($id)
     {
+        $counter = rand(0,999);
         var_dump("from count");
         $start = 0;
         start:
@@ -455,7 +466,7 @@ class Mylib {
 
         // set options
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_PROXY, proxyIp());
+        curl_setopt($ch, CURLOPT_PROXY, proxyIpDocker($counter));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // read more about HTTPS http://stackoverflow.com/questions/31162706/how-to-scrape-a-ssl-or-https-url/31164409#31164409
         curl_setopt($ch, CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
@@ -463,22 +474,12 @@ class Mylib {
         // $output contains the output string
         $str = curl_exec($ch);
         $error_msg = curl_error($ch);
-        if($error_msg == "Proxy CONNECT aborted") goto start;
-        if(strpos($error_msg, 'Timed out') !== false) goto start;
-        if(strpos($error_msg, '502') !== false) goto start;
-        if(strpos($error_msg, '503') !== false) goto start;
-        if(strpos($error_msg, '401') !== false) goto start;
-        if(strpos($error_msg, '400') !== false) goto start;
-        if(strpos($error_msg, '404') !== false) goto start;
-        if(strpos($error_msg, '403') !== false) goto start;
-        if(strpos($error_msg, '514') !== false) goto start;
-        if(strpos($error_msg, 'failure') !== false) goto start;
-        if(strpos($error_msg, 'SSL_ERROR_SYSCALL') !== false) goto start;
-        if(strpos($error_msg, 'Failed') !== false) goto start;
-        if(strpos($error_msg, 'The document has moved') !== false) goto start;
-        // echo "CURL ERROR Message: ".var_dump($error_msg);
-        // echo "<br>";
-        // echo "Returned result: ".var_dump($str);
+        if(check_error_msg($error_msg) == 1){
+            goto start;
+        }
+        echo "CURL ERROR Message: ".var_dump($error_msg);
+        echo "<br>";
+        echo "Returned result: ".var_dump($str);
         curl_close($ch); 
 
         //var_dump($str);
@@ -505,11 +506,15 @@ class Mylib {
                     var_dump("article count =".$article_count);
                 }
             }
+            // clean up memory
+        $html_base->clear();
+        unset($html_base);
         return $article_count;
     }
 
     public function reference_list($id)
     {
+        $counter = 0;
         //$id = '17416187374477165610';
         $i=0;
         $n=0;
@@ -535,7 +540,7 @@ class Mylib {
 
         // set options
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_PROXY, proxyIp());
+        curl_setopt($ch, CURLOPT_PROXY, proxyIpDocker($counter));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // read more about HTTPS http://stackoverflow.com/questions/31162706/how-to-scrape-a-ssl-or-https-url/31164409#31164409
         curl_setopt($ch, CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
@@ -543,22 +548,12 @@ class Mylib {
         // $output contains the output string
         $str = curl_exec($ch);
         $error_msg = curl_error($ch);
-        if($error_msg == "Proxy CONNECT aborted") goto start;
-        if(strpos($error_msg, 'Timed out') !== false) goto start;
-        if(strpos($error_msg, '502') !== false) goto start;
-        if(strpos($error_msg, '503') !== false) goto start;
-        if(strpos($error_msg, '400') !== false) goto start;
-        if(strpos($error_msg, '401') !== false) goto start;
-        if(strpos($error_msg, '403') !== false) goto start;
-        if(strpos($error_msg, '404') !== false) goto start;
-        if(strpos($error_msg, '514') !== false) goto start;
-        if(strpos($error_msg, 'failure') !== false) goto start;
-        if(strpos($error_msg, 'SSL_ERROR_SYSCALL') !== false) goto start;
-        if(strpos($error_msg, 'Failed') !== false) goto start;
-        if(strpos($error_msg, 'The document has moved') !== false) goto start;
-        // echo "CURL ERROR Message: ".var_dump($error_msg);
-        // echo "<br>";
-        // echo "Returned result: ".var_dump($str);
+        if(check_error_msg($error_msg) == 1){
+            goto start;
+        }
+        echo "CURL ERROR Message: ".var_dump($error_msg);
+        echo "<br>";
+        echo "Returned result: ".var_dump($str);
         curl_close($ch); 
 
         //var_dump($str);
@@ -675,19 +670,9 @@ class Mylib {
         // $output contains the output string
         $str = curl_exec($ch);
         $error_msg = curl_error($ch);
-        if($error_msg == "Proxy CONNECT aborted") goto start;
-        if(strpos($error_msg, 'Timed out') !== false) goto start;
-        if(strpos($error_msg, '502') !== false) goto start;
-        if(strpos($error_msg, '503') !== false) goto start;
-        if(strpos($error_msg, '400') !== false) goto start;
-        if(strpos($error_msg, '401') !== false) goto start;
-        if(strpos($error_msg, '403') !== false) goto start;
-        if(strpos($error_msg, '404') !== false) goto start;
-        if(strpos($error_msg, '514') !== false) goto start;
-        if(strpos($error_msg, 'failure') !== false) goto start;
-        if(strpos($error_msg, 'SSL_ERROR_SYSCALL') !== false) goto start;
-        if(strpos($error_msg, 'Failed') !== false) goto start;
-        if(strpos($error_msg, 'The document has moved') !== false) goto start;
+        if(check_error_msg($error_msg) == 1){
+            goto start;
+        }
         // echo "CURL ERROR Message: ".var_dump($error_msg);
         // echo "<br>";
         // echo "Returned result: ".var_dump($str);

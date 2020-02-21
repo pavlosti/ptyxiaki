@@ -159,12 +159,13 @@ class Professors extends MY_Controller {
                         }
                         else
                         {
+                            $count_new_ref = 0;
                             // fere ola ta ref toy arthrou
                         $reference_list_from_web = $this->mylib->reference_list($article->references_id);
                         var_dump("after scraping RESULTS");
                         var_dump($reference_list_from_web);
                         foreach($reference_list_from_web as $ref_item_web){
-                            $reference_list_from_db = $this->references_model->getRows(['bibtex_id' => $ref_item_web['bibtex_id'] ]);
+                            $reference_list_from_db = $this->references_model->getRows(['bibtex_id' => $ref_item_web['bibtex_id'], 'scholarid_article' => $article->scholarid_article]);
                             if($reference_list_from_db != null){
                                 var_dump('uparxei sthn vash');
                             }else{
@@ -179,8 +180,11 @@ class Professors extends MY_Controller {
                                 $reference->ref_id = $article->references_id;
                                 $reference->scholarid_article = $article->scholarid_article;
                                 var_dump("New reference inserted");
-                                //var_dump($reference);
                                 $reference->save();
+                                //var_dump($reference);
+                                // if($article->citation != 0){
+                                //     $count_new_ref++;
+                                // }
                                 //sleep(120);
                                 $count++;
                             }
@@ -191,6 +195,10 @@ class Professors extends MY_Controller {
                         var_dump("den uparxei citation");
                     }
                     var_dump("next article");
+                    //UPDATE tou citation tou arthrou
+                    // $article = $this->article_model->getRow(['scholarid_article' => $article->scholarid_article]);
+                    // $article->citation = $article->citation + $count_new_ref;
+                    // $article->save();
                 }
                 //UPDATE ARTICLE CITATION
                 $prof = $this->professors_model->getRow(['scholarid' => $profScholarId]);
@@ -334,6 +342,16 @@ class Professors extends MY_Controller {
                 $article->save();
             }else{
                 var_dump("Uparxei to arthro sthn vash.");
+                var_dump("kane elegxo ean exei allaksei to citation");
+                if($res->citation != $value['citation']){
+                    var_dump("web citation=".$value['citation']);
+                    var_dump("db citation = ".$res->citation);
+                    
+                    //UPDATE
+                    $article = $this->article_model->getRow(['scholarid_professor' => $profScholarId, 'scholarid_article' => $value['articleId'] ]);
+                    $article->citation = $value['citation'];
+                    $article->save();
+                }
             }
         }
         $prof = $this->professors_model->getRow(['scholarid' => $profScholarId]);
@@ -350,6 +368,16 @@ class Professors extends MY_Controller {
         $url = 'https://scholar.google.gr/citations?view_op=view_citation&hl=en&user='.$profScholarId.'&citation_for_view='.$profScholarId.':'.$articleId;
         $resutls = $this->mylib->scraping_single_article($url);
         return $resutls;
+    }
+
+    public function sync(){
+        $professors = $this->professors_model->getRows();
+        foreach ($professors as $prof) {
+            $this->article_list($prof->scholarid);
+            $this->reference_list($prof->scholarid);
+            $this->reference_single($prof->scholarid);
+            die();
+        }
     }
 
 }
