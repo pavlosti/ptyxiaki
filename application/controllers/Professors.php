@@ -80,6 +80,7 @@ class Professors extends MY_Controller {
         $prof->firstname = $this->input->post('firstname');
         $prof->lastname = $this->input->post('lastname');
         $prof->email = $this->input->post('email');
+        $prof->citation_on_db = 0;
 
         // afou ginei web scrapping tote kanw eisagvgh sthn vash
          if($prof->save())
@@ -134,7 +135,9 @@ class Professors extends MY_Controller {
         $i=0;
         $j=0;
         echo "<pre>";
+        ///////////////////////////////////////////////////////////////////
         $article_list = $this->article_model->getRows(['scholarid_professor' => $profScholarId ]);
+        //////////////////////////////////////////////////////////////////
         if($article_list == null){
             var_dump("den uparxoun arthra sthn vash!");
         }else{
@@ -149,9 +152,12 @@ class Professors extends MY_Controller {
                     if($article->citation != 0){
                         var_dump("arthro me citation");
                         var_dump($article->references_id);
+                        $data = $this->mylib->reference_list_count($article->references_id);
 
-                        $reference_list_count_from_web = $this->mylib->reference_list_count($article->references_id);
-                        $reference_list_count_from_db = $this->references_model->getRows(['ref_id' => $article->references_id]);
+                        $reference_list_count_from_web = $data[2];
+                        $reference_list_count_from_db = $this->references_model->getRows(['ref_id' => $article->references_id, 'scholarid_article' => $article->scholarid_article]);
+                        var_dump('ref from web = '.$reference_list_count_from_web);
+                        var_dump('ref from db = '.count($reference_list_count_from_db));
                      
                         if($reference_list_count_from_web == count($reference_list_count_from_db))
                         {
@@ -161,7 +167,7 @@ class Professors extends MY_Controller {
                         {
                             $count_new_ref = 0;
                             // fere ola ta ref toy arthrou
-                        $reference_list_from_web = $this->mylib->reference_list($article->references_id);
+                        $reference_list_from_web = $this->mylib->reference_list($data);
                         var_dump("after scraping RESULTS");
                         var_dump($reference_list_from_web);
                         foreach($reference_list_from_web as $ref_item_web){

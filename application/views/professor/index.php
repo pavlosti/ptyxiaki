@@ -25,8 +25,8 @@
           <table class="table table-bordered table-hover table-striped" cellspacing="0" id="exampleAddRow">
             <thead>
               <tr>
-                <th>Όνομα</th>
-                <th>Επίθετο</th>
+                <th>Name</th>
+                <th>Surname</th>
                 <th>Email</th>
                 <th>Citation(db)</th>
                 <th>Citation(web)</th>

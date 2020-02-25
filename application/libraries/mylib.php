@@ -15,7 +15,6 @@ function proxyIp()
     curl_close($curl);
     $res = json_decode($response);
     $res = $res->data[0]->ipPort;
-    var_dump("IP IS = ".$res);
     return $res;
 }
 
@@ -23,6 +22,7 @@ function proxyIpDocker(&$counter)
 {
     var_dump("counter is = ".$counter);
     $url = 'https://www.proxydocker.com/en/proxylist/api?email=pavlostif%40outlook.com&country=all&city=all&port=all&type=all&anonymity=all&state=all&need=Google&format=json';
+    // $url = 'https://www.proxydocker.com/en/proxylist/api?email=pavlostif%40outlook.com&country=all&city=all&port=all&type=all&anonymity=all&state=all&need=all&format=json';
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($curl);
@@ -30,7 +30,6 @@ function proxyIpDocker(&$counter)
     $res = json_decode($response);
     
     $res = $res->Proxies[$counter]->ip.':'.$res->Proxies[$counter]->port;
-    var_dump("IP IS = ".$res);
     $counter++;
     return $res;
 }
@@ -452,6 +451,7 @@ class Mylib {
 
     public function reference_list_count($id)
     {
+        $article_count = 0;
         $counter = rand(0,999);
         var_dump("from count");
         $start = 0;
@@ -509,12 +509,21 @@ class Mylib {
             // clean up memory
         $html_base->clear();
         unset($html_base);
-        return $article_count;
+        if($article_count == 0)
+            goto start;
+        $data[0] = $id;
+        $data[1] = $str;
+        $data[2] = $article_count;
+        return $data;
     }
 
-    public function reference_list($id)
+    public function reference_list($data)
     {
-        $counter = 0;
+        $flag = 0;
+        $id = $data[0];
+        $str = $data[1];
+        $article_count = $data[2];
+        $counter = $counter = rand(0,999);
         //$id = '17416187374477165610';
         $i=0;
         $n=0;
@@ -536,52 +545,56 @@ class Mylib {
         var_dump('URL IS ==='.$url);
         // $html = file_get_html($url, false, $stream);
 
-        $ch = curl_init();
+        if($flag != 0){
 
-        // set options
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_PROXY, proxyIpDocker($counter));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // read more about HTTPS http://stackoverflow.com/questions/31162706/how-to-scrape-a-ssl-or-https-url/31164409#31164409
-        curl_setopt($ch, CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 
-        // $output contains the output string
-        $str = curl_exec($ch);
-        $error_msg = curl_error($ch);
-        if(check_error_msg($error_msg) == 1){
-            goto start;
+            $ch = curl_init();
+
+            // set options
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_PROXY, proxyIpDocker($counter));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // read more about HTTPS http://stackoverflow.com/questions/31162706/how-to-scrape-a-ssl-or-https-url/31164409#31164409
+            curl_setopt($ch, CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+
+            // $output contains the output string
+            $str = curl_exec($ch);
+            $error_msg = curl_error($ch);
+            if(check_error_msg($error_msg) == 1){
+                goto start;
+            }
+            echo "CURL ERROR Message: ".var_dump($error_msg);
+            echo "<br>";
+            echo "Returned result: ".var_dump($str);
+            curl_close($ch); 
+
+            //var_dump($str);
+            var_dump("------");
+            
         }
-        echo "CURL ERROR Message: ".var_dump($error_msg);
-        echo "<br>";
-        echo "Returned result: ".var_dump($str);
-        curl_close($ch); 
-
-        //var_dump($str);
-        var_dump("------");
 
         $html_base = new simple_html_dom();
 
         $html_base->load($str); 
         if($j == 0){
-            $article_count = '';
-            $contents = [];
-            foreach($html_base->find('.gs_ab_mdw') as $key => $element)
-            {            
+            // $article_count = '';
+            // $contents = [];
+            // foreach($html_base->find('.gs_ab_mdw') as $key => $element)
+            // {            
                 
-                if($key == 1)
-                {
-                    $contents = explode(' ', $element->plaintext);
-                    if(strpos($contents[0], 'About') !== false){
-                        $article_count = $contents[1];
-                    }else{
-                        $article_count = $contents[0];
-                    }
-                    var_dump($contents);
-                    if($article_count == '') goto start;
-                    var_dump("article count =".$article_count);
-                }
-            }
-            
+            //     if($key == 1)
+            //     {
+            //         $contents = explode(' ', $element->plaintext);
+            //         if(strpos($contents[0], 'About') !== false){
+            //             $article_count = $contents[1];
+            //         }else{
+            //             $article_count = $contents[0];
+            //         }
+            //         //var_dump($contents);
+            //         if($article_count == '') goto start;
+            //         //var_dump("article count =".$article_count);
+            //     }
+            // }
             $num = intval($article_count) / 10 ;
              var_dump("num is = ".$num);
             $intpart = floor( $num );
@@ -621,6 +634,12 @@ class Mylib {
         unset($html_base);
 
          var_dump("id in ARRAY IS ".count($reference));
+         if(count($reference) == 0){
+            $flag = 1;
+            goto start;
+        }else{
+            $flag = 1;
+        }
          if($j <= $intpart){
 
             if(count($reference) == $a & $t == ($a / 10))

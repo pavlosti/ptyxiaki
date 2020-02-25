@@ -58,7 +58,7 @@
           <form method="post" action="#">
             <div class="form-group form-material floating" data-plugin="formMaterial">
               <input type="username" class="form-control" name="username" />
-              <label class="floating-label">username</label>
+              <label class="floating-label">Username</label>
             </div>
             <div class="form-group form-material floating" data-plugin="formMaterial">
               <input type="password" class="form-control" name="password" />

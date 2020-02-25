@@ -11,7 +11,7 @@
         <div class="col-xl-6 col-12">
            <!-- Example Line -->
               <div class="example-wrap">
-                <h4 class="example-title">Ερευνητικό εργο ολων των ετων</h4>
+                <h4 class="example-title">Ερευνητικό εργο ολων των ετών</h4>
                 <p>Παρακάτω βλέπουμε το ερευνητικό έργο που έχει ανέβει ανα έτος απο το προσωπικό των καθηγητών του Πανεπιστημίου μας</p>
                 <div class="example text-center">
                   <canvas id="chartByYear" height="300" width="450"></canvas>
@@ -23,7 +23,7 @@
         <div class="col-xl-6 col-12">
           <!-- Example Pie -->
               <div class="example-wrap m-md-0">
-                <h4 class="example-title">ΕΡΓΟ ΠΟΥ ΕΧΕΙ ΠΑΡΑΧΘΕΙ ΤΗΝ ΔΙΔΑΚΤΙΚΗ ΠΕΡΙΟΔΟ:  
+                <h4 class="example-title">ΕΡΓΟ ΠΟΥ ΕΧΕΙ ΠΑΡΑΧΘΕΙ ΤΗ ΔΙΔΑΚΤΙΚΗ ΠΕΡΙΟΔΟ:  
                   <form method="post">
                     <select value="2019" class="custom-select" onchange="graphCurrentYear(this.value)">
                       <?php foreach($yearlist as $year): ?>

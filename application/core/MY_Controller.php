@@ -30,7 +30,7 @@ class MY_Controller extends CI_Controller {
         $this->viewData['menu'] = [
             ['href' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'wb-dashboard', 'modal' => false],
             ['href' => 'professors', 'label' => 'Professors', 'icon' => 'wb-user', 'modal' => false],
-            ['href' => 'articles', 'label' => 'Ερευνητικό Έργο', 'icon' => 'wb-book', 'modal' => false]
+            ['href' => 'articles', 'label' => 'Scientific Publications', 'icon' => 'wb-book', 'modal' => false]
         ];
 
         $this->viewData['tags'] = ['url' => '', 'type'=>'' , 'title' => '', 'description' => '', 'image' => ''];

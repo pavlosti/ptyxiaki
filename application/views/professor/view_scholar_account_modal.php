@@ -11,7 +11,7 @@
             <th class="w-50"></th>
             <th>Name</th>
             <th class="hidden-sm-down">ScholarId</th>
-            <th class="hidden-sm-down">Επαληθευμένο από</th>
+            <th class="hidden-sm-down">Verified by</th>
             <th class="hidden-sm-down">Citation</th>
           </tr>
         </thead>

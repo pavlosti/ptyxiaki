@@ -20,7 +20,7 @@ class Articles extends MY_Controller {
     public function index()
     {
       if(isset($_SESSION['userid'])){
-        $this->viewData['title'] = 'Ερευνητικό Έργο Καθηγητών';
+        $this->viewData['title'] = 'Scientific Publications';
         //$viewData['articles'] = $this->article_model->get_articles();
         $prof = $this->professors_model->getRows();
         $this->viewData['prof'] = $prof;
