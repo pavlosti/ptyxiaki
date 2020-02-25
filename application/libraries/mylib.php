@@ -227,9 +227,9 @@ class Mylib {
         if(check_error_msg($error_msg) == 1){
             goto start;
         }
-        // echo "CURL ERROR Message: ".var_dump($error_msg);
-        // echo "<br>";
-        // echo "Returned result: ".var_dump($str);
+        echo "CURL ERROR Message: ".var_dump($error_msg);
+        echo "<br>";
+        echo "Returned result: ".var_dump($str);
         curl_close($ch); 
 
         //var_dump($str);
@@ -523,7 +523,7 @@ class Mylib {
         $id = $data[0];
         $str = $data[1];
         $article_count = $data[2];
-        $counter = $counter = rand(0,999);
+        $counter = rand(0,999);
         //$id = '17416187374477165610';
         $i=0;
         $n=0;
@@ -674,14 +674,15 @@ class Mylib {
 
     public function bibtex_url($bibtex_id)
     {
+        $counter = rand(0,999);
         //$url = 'https://scholar.google.gr/scholar?q=info:'.$bibtex_id.':scholar.google.com/&output=cite&scirp=0&hl=en';
         $url = 'https://scholar.google.gr/scholar?q=info:'.$bibtex_id.':scholar.google.com/&output=cite&scirp=0&hl=en';
         start:
+        
         $ch = curl_init();
-
         // set options
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_PROXY, proxyIp());
+        curl_setopt($ch, CURLOPT_PROXY, proxyIpDocker($counter));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // read more about HTTPS http://stackoverflow.com/questions/31162706/how-to-scrape-a-ssl-or-https-url/31164409#31164409
         curl_setopt($ch, CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
@@ -692,18 +693,20 @@ class Mylib {
         if(check_error_msg($error_msg) == 1){
             goto start;
         }
-        // echo "CURL ERROR Message: ".var_dump($error_msg);
-        // echo "<br>";
-        // echo "Returned result: ".var_dump($str);
+        echo "CURL ERROR Message: ".var_dump($error_msg);
+        echo "<br>";
+        echo "Returned result: ".var_dump($str);
         curl_close($ch); 
 
         $html_base = new simple_html_dom();
 
         $html_base->load($str);
+        var_dump($bibtex_id);
         $temp = [];
         foreach ($html_base->find('.gs_citr') as $idx => $element) 
         {
             if($idx == 1){
+                $contents[1] = "";
                 $contents = explode('(19', $element->plaintext);
                 if($contents[1] == ""){
                     $contents = explode('(20', $element->plaintext);
@@ -718,17 +721,20 @@ class Mylib {
                     $temp['year'] = '20'.$contents1[0];
                 }
                 
-                $temp['title'] = $contents1[1];
-                //var_dump($temp);
-                goto end;
+                $temp['title'] = $contents1[1];  
+                var_dump($temp);
+                var_dump(count($temp));
+                if(count($temp) == 0){
+                    goto start;  
+                }else{
+                    goto end;
+                }                                   
             }
          } 
          end:
-        //var_dump($html_base);
         // clean up memory
         $html_base->clear();
         unset($html_base);
-        var_dump($temp);
         return $temp;
     }
 

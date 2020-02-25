@@ -230,25 +230,33 @@ class Professors extends MY_Controller {
             foreach ($ref_list as $key) {
                 $expl = explode('0000', $key->ref_id);
                 echo "<pre>";
-                // var_dump($expl);
                 var_dump($key->ref_id);
-                // die();
                 if($key->title == '' && $key->publishers == '' && $key->year == '' && $expl[0] != "")
                 {
                     $res = $this->mylib->bibtex_url($key->bibtex_id);
-                    $res1 = $this->references_model->getRow(['bibtex_id' => $key->bibtex_id]);
+                    var_dump($key->bibtex_id);
+                    $res1 = $this->references_model->getRow(['bibtex_id' => $key->bibtex_id, 'ref_id' => $key->ref_id]);
                     $ref = new $this->references_model();
-                    $ref = $res1;
-                    //var_dump($ref);
-                    $ref->year = $res['year'];
-                    $ref->publishers = $res['publishers'];
-                    $ref->title = $res['title'];
-                    var_dump("new ref inserted");
+                    if(isset($res['year']))
+                        $ref->year = $res['year'];
+                    if (isset($res['publishers'])) {
+                        $ref->publishers = $res['publishers'];
+                    }
+                    if (isset($res['title'])) {
+                        $ref->title = $res['title'];
+                    }
+                    $ref->id = $res1->id;
+                    $ref->bibtex_id = $res1->bibtex_id;
+                    $ref->ref_id = $res1->ref_id;
+                    $ref->scholarid_article = $res1->scholarid_article;
+                    $ref->inserted_at = $res1->inserted_at;
+                    var_dump("update ref");
+                    var_dump($ref);
                     $ref->save();
                 }else{
                     var_dump('uparxoun dedomena ara oxi scraping h den yparxei bibtexid gia to sygkekrimeno ref');
                 }
-            }        
+            }       
         }
     }
 
@@ -382,7 +390,6 @@ class Professors extends MY_Controller {
             $this->article_list($prof->scholarid);
             $this->reference_list($prof->scholarid);
             $this->reference_single($prof->scholarid);
-            die();
         }
     }
 

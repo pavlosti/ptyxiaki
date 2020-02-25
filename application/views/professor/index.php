@@ -16,8 +16,8 @@
                   <i class="icon wb-plus" aria-hidden="true"></i> Add professor
                 </a>
 
-                <button  class="btn btn-outline btn-primary" type="button">
-                  <i class="icon wb-plus" aria-hidden="true"></i> Sync
+                <button onclick="window.location.href = 'professors/sync';" class="btn btn-outline btn-primary" type="button">
+                  <i class="icon wb-plus" aria-hidden="true"></i> Update All
                 </button>
               </div>
             </div>

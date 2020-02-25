@@ -27,7 +27,7 @@
                   <form method="post">
                     <select value="2019" class="custom-select" onchange="graphCurrentYear(this.value)">
                       <?php foreach($yearlist as $year): ?>
-                        <option value="<?= $year->year?>"><?= intval($year->year)?>-<?= intval($year->year) + 1 ?></a>
+                        <option <?php if($year->year == '2019'){ echo 'selected';}?> value="<?= $year->year?>"><?= intval($year->year)?>-<?= intval($year->year) + 1 ?></a>
                       <?php endforeach; ?>
                     </select>
                   </form>
